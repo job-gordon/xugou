@@ -12,7 +12,7 @@ export interface Monitor {
   expected_status?: number;
   interval: number;
   timeout: number;
-  status: 'up' | 'down' | 'pending' | 'unknown';
+  status: "up" | "down" | "pending" | "unknown";
   last_checked?: string;
   uptime_percentage?: number;
   uptime?: number;
@@ -23,31 +23,22 @@ export interface Monitor {
   created_at: string;
   updated_at: string;
   history?: MonitorStatusHistory[];
-  checks?: MonitorCheck[];
-}
-
-export interface MonitorWithSelection extends Monitor {
-  selected: boolean;
 }
 
 export interface MonitorStatusHistory {
   id: number;
   monitor_id: number;
-  status: 'up' | 'down';
-  response_time: number;
-  created_at: string;
+  status: "up" | "down";
+  response_time?: number;
+  timestamp?: string;
+  status_code?: number;
+  error?: string;
 }
 
-export interface MonitorCheck {
-  id: number;
-  monitor_id: number;
-  status: 'up' | 'down';
-  response_time: number;
-  status_code: number;
-  response_body: string;
-  error?: string;
-  created_at: string;
-  checked_at?: string;
+export interface MonitorStatusHistoryResponse {
+  success: boolean;
+  message: string;
+  history?: MonitorStatusHistory[];
 }
 
 export interface MonitorResponse {
@@ -66,12 +57,6 @@ export interface HistoryResponse {
   success: boolean;
   message: string;
   history?: MonitorStatusHistory[];
-}
-
-export interface ChecksResponse {
-  success: boolean;
-  message: string;
-  checks?: MonitorCheck[];
 }
 
 export interface CreateMonitorRequest {
@@ -95,9 +80,3 @@ export interface UpdateMonitorRequest {
   interval?: number;
   timeout?: number;
 }
-
-export interface CheckResponse {
-  success: boolean;
-  message: string;
-  check?: MonitorCheck;
-} 
