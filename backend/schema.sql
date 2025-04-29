@@ -6,6 +6,8 @@ DROP TABLE IF EXISTS status_page_agents;
 DROP TABLE IF EXISTS status_page_monitors;
 DROP TABLE IF EXISTS status_page_config;
 DROP TABLE IF EXISTS monitor_status_history;
+DROP TABLE IF EXISTS monitor_status_history_24h;
+DROP TABLE IF EXISTS monitor_daily_stats;
 DROP TABLE IF EXISTS agents;
 DROP TABLE IF EXISTS monitors;
 DROP TABLE IF EXISTS users;
@@ -52,6 +54,33 @@ CREATE TABLE IF NOT EXISTS monitor_status_history (
   response_time INTEGER,
   status_code INTEGER,
   error TEXT,
+  FOREIGN KEY (monitor_id) REFERENCES monitors(id)
+);
+
+-- 24小时监控状态历史表(热表)
+CREATE TABLE IF NOT EXISTS monitor_status_history_24h (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  monitor_id INTEGER NOT NULL,
+  status TEXT NOT NULL,
+  timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  response_time INTEGER,
+  status_code INTEGER,
+  error TEXT,
+  FOREIGN KEY (monitor_id) REFERENCES monitors(id)
+);
+
+-- 监控每日统计表
+CREATE TABLE IF NOT EXISTS monitor_daily_stats (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  monitor_id INTEGER NOT NULL,
+  date TEXT NOT NULL,
+  total_checks INTEGER NOT NULL DEFAULT 0,
+  up_checks INTEGER NOT NULL DEFAULT 0,
+  down_checks INTEGER NOT NULL DEFAULT 0,
+  avg_response_time INTEGER DEFAULT 0,
+  min_response_time INTEGER DEFAULT 0,
+  max_response_time INTEGER DEFAULT 0,
+  availability REAL DEFAULT 0,
   FOREIGN KEY (monitor_id) REFERENCES monitors(id)
 );
 

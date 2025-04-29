@@ -1,17 +1,16 @@
 import { useState, useEffect } from "react";
 import { Box, Flex, Heading, Text, Grid, Badge, Theme } from "@radix-ui/themes";
 import { getStatusPageData } from "../../services/api/status";
-import { StatusAgent } from "../../types/status";
-import { Monitor } from "../../types/monitors";
 import AgentCard from "../../components/AgentCard";
 import MonitorCard from "../../components/MonitorCard";
 import { useTranslation } from "react-i18next";
+import { Agent, MonitorWithDailyStatsAndStatusHistory } from "../../types";
 
 const StatusPage = () => {
   const { t } = useTranslation();
   const [data, setData] = useState<{
-    monitors: Monitor[];
-    agents: StatusAgent[];
+    monitors: MonitorWithDailyStatsAndStatusHistory[];
+    agents: Agent[];
   }>({
     monitors: [],
     agents: [],
@@ -22,28 +21,6 @@ const StatusPage = () => {
     t("statusPage.allOperational")
   );
   const [error, setError] = useState<string | null>(null);
-
-  // 获取数据
-  const fetchData = async () => {
-    setLoading(true);
-    const response = await getStatusPageData();
-    if (response) {
-      const statusData = response;
-      // 设置页面标题和描述
-      setPageTitle(statusData.title || t("statusPage.title"));
-      setPageDescription(
-        statusData.description || t("statusPage.allOperational")
-      );
-      console.log(statusData);
-      setData({
-        monitors: statusData.monitors || [],
-        agents: statusData.agents || [],
-      });
-    } else {
-      setError(t("statusPage.fetchError"));
-    }
-    setLoading(false);
-  };
 
   // 从API获取数据
   useEffect(() => {
@@ -58,6 +35,28 @@ const StatusPage = () => {
       clearInterval(intervalId);
     };
   }, []); // 依赖于 t 函数
+
+  // 获取数据
+  const fetchData = async () => {
+    setLoading(true);
+    const response = await getStatusPageData();
+
+    if (response) {
+      // 设置页面标题和描述
+      setPageTitle(response.title || t("statusPage.title"));
+      setPageDescription(
+        response.description || t("statusPage.allOperational")
+      );
+      console.log(response);
+      setData({
+        monitors: response.monitors || [],
+        agents: response.agents || [],
+      });
+    } else {
+      setError(t("statusPage.fetchError"));
+    }
+    setLoading(false);
+  };
 
   // 错误显示
   if (error) {
@@ -123,7 +122,7 @@ const StatusPage = () => {
               </Heading>
               <Grid columns={{ initial: "1" }} gap="4">
                 {data.monitors.map((monitor) => (
-                  <MonitorCard key={monitor.id} monitor={monitor} />
+                  <MonitorCard monitor={monitor} />
                 ))}
               </Grid>
             </Box>

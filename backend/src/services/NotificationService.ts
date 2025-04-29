@@ -165,10 +165,9 @@ export async function deleteNotificationTemplate(
 
 // 通知设置相关服务,获取所有的通知设置
 export async function getNotificationConfig(
-  db: D1Database,
-  userId: number
+  db: D1Database
 ): Promise<models.NotificationConfig> {
-  return await repositories.getNotificationConfig(db, userId);
+  return await repositories.getNotificationConfig(db);
 }
 
 export async function createOrUpdateSettings(
@@ -456,25 +455,6 @@ async function sendTelegramNotification(
     };
   }
 }
-
-/**
- * 验证Telegram令牌是否有效
- */
-export async function validateTelegramToken(
-  botToken: string
-): Promise<boolean> {
-  try {
-    const response = await fetch(
-      `https://api.telegram.org/bot${botToken}/getMe`
-    );
-    const data = await response.json();
-    return data.ok === true;
-  } catch (error) {
-    console.error("验证Telegram令牌失败:", error);
-    return false;
-  }
-}
-
 /**
  * 根据渠道类型发送通知
  */
@@ -823,43 +803,4 @@ export async function shouldSendNotification(
   }
 
   return { shouldSend, channels };
-}
-
-/**
- * 发送测试邮件
- */
-export async function sendTestEmail(
-  channel: {
-    id: string | number;
-    name: string;
-    type: string;
-    config: any;
-    enabled: boolean;
-  },
-  subject: string,
-  content: string
-): Promise<{ success: boolean; error?: string }> {
-  try {
-    const channelObj: models.NotificationChannel = {
-      id: typeof channel.id === "string" ? parseInt(channel.id) : channel.id,
-      name: channel.name,
-      type: channel.type,
-      config:
-        typeof channel.config === "string"
-          ? channel.config
-          : JSON.stringify(channel.config),
-      enabled: channel.enabled,
-      created_by: 0,
-      created_at: "",
-      updated_at: "",
-    };
-
-    return await sendNotificationByChannel(channelObj, subject, content);
-  } catch (error) {
-    console.error("发送测试邮件失败:", error);
-    return {
-      success: false,
-      error: error instanceof Error ? error.message : String(error),
-    };
-  }
 }

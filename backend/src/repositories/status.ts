@@ -1,73 +1,9 @@
-import { MonitorStatusHistory, Bindings } from "../models";
-
-// 状态页配置接口定义
-export interface StatusPageConfig {
-  id?: number;
-  user_id: number;
-  title: string;
-  description: string;
-  logo_url: string;
-  custom_css: string;
-}
-
-// 监控项接口
-export interface Monitor {
-  id: number;
-  name: string;
-  url: string;
-  method: string;
-  interval: number;
-  timeout: number;
-  expected_status: number;
-  headers: string;
-  body: string;
-  created_by: number;
-  active: boolean;
-  status: string;
-  uptime: number;
-  response_time: number;
-  last_checked?: string;
-  created_at: string;
-  updated_at: string;
-  history?: MonitorStatusHistory[];
-}
-
-// 客户端接口
-export interface Agent {
-  id: number;
-  name: string;
-  token: string;
-  created_by: number;
-  created_at: string;
-  updated_at: string;
-  status?: string;
-  cpu_usage?: number;
-  memory_total?: number;
-  memory_used?: number;
-  disk_total?: number;
-  disk_used?: number;
-  network_rx?: number;
-  network_tx?: number;
-  hostname?: string;
-  ip_addresses?: string;
-  os?: string;
-  version?: string;
-}
+import { StatusPageConfig, Agent, Bindings } from "../models";
 
 /**
  * 状态页相关的数据库操作
  */
 
-// 获取用户的状态页配置
-export async function getUserStatusPageConfig(
-  db: Bindings["DB"],
-  userId: number
-) {
-  return await db
-    .prepare("SELECT * FROM status_page_config WHERE user_id = ?")
-    .bind(userId)
-    .all<StatusPageConfig>();
-}
 
 // 获取所有状态页配置
 export async function getAllStatusPageConfigs(db: Bindings["DB"]) {
@@ -230,68 +166,4 @@ export async function getSelectedAgents(db: Bindings["DB"], configId: number) {
     .all<{ agent_id: number }>();
 }
 
-// 获取客户端详情
-export async function getAgentsByIds(db: Bindings["DB"], agentIds: number[]) {
-  if (agentIds.length === 0) {
-    return { results: [] };
-  }
 
-  const placeholders = agentIds.map(() => "?").join(",");
-  return await db
-    .prepare(`SELECT * FROM agents WHERE id IN (${placeholders})`)
-    .bind(...agentIds)
-    .all<Agent>();
-}
-
-// 创建默认配置并关联所有监控项和客户端
-export async function createDefaultConfig(db: Bindings["DB"], adminId: number) {
-  // 创建默认配置
-  const insertResult = await createStatusPageConfig(
-    db,
-    adminId,
-    "系统状态",
-    "实时监控系统状态",
-    "",
-    ""
-  );
-
-  if (!insertResult || typeof insertResult.id !== "number") {
-    throw new Error("创建默认配置失败");
-  }
-
-  const configId = insertResult.id;
-
-  // 获取所有活跃监控项
-  let monitors;
-  try {
-    monitors = await db
-      .prepare("SELECT * FROM monitors WHERE active = 1")
-      .all();
-  } catch (error) {
-    monitors = { results: [] };
-  }
-
-  // 获取所有客户端
-  let agents;
-  try {
-    agents = await db.prepare("SELECT * FROM agents").all();
-  } catch (error) {
-    agents = { results: [] };
-  }
-
-  // 关联监控项
-  if (monitors.results && monitors.results.length > 0) {
-    for (const monitor of monitors.results as { id: number }[]) {
-      await addMonitorToConfig(db, configId, monitor.id);
-    }
-  }
-
-  // 关联客户端
-  if (agents.results && agents.results.length > 0) {
-    for (const agent of agents.results as { id: number }[]) {
-      await addAgentToConfig(db, configId, agent.id);
-    }
-  }
-
-  return configId;
-}
