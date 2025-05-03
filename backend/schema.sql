@@ -5,9 +5,9 @@ DROP TABLE IF EXISTS notification_channels;
 DROP TABLE IF EXISTS status_page_agents;
 DROP TABLE IF EXISTS status_page_monitors;
 DROP TABLE IF EXISTS status_page_config;
-DROP TABLE IF EXISTS monitor_status_history;
 DROP TABLE IF EXISTS monitor_status_history_24h;
 DROP TABLE IF EXISTS monitor_daily_stats;
+DROP TABLE IF EXISTS agent_metrics_24h;
 DROP TABLE IF EXISTS agents;
 DROP TABLE IF EXISTS monitors;
 DROP TABLE IF EXISTS users;
@@ -43,18 +43,6 @@ CREATE TABLE IF NOT EXISTS monitors (
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   FOREIGN KEY (created_by) REFERENCES users(id)
-);
-
--- 监控状态历史表
-CREATE TABLE IF NOT EXISTS monitor_status_history (
-  id INTEGER PRIMARY KEY AUTOINCREMENT,
-  monitor_id INTEGER NOT NULL,
-  status TEXT NOT NULL,
-  timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-  response_time INTEGER,
-  status_code INTEGER,
-  error TEXT,
-  FOREIGN KEY (monitor_id) REFERENCES monitors(id)
 );
 
 -- 24小时监控状态历史表(热表)
@@ -97,14 +85,36 @@ CREATE TABLE IF NOT EXISTS agents (
   ip_addresses TEXT, -- 存储多个IP地址的JSON字符串
   os TEXT,
   version TEXT,
-  cpu_usage REAL,
-  memory_total INTEGER,
-  memory_used INTEGER,
-  disk_total INTEGER,
-  disk_used INTEGER,
-  network_rx INTEGER,
-  network_tx INTEGER,
   FOREIGN KEY (created_by) REFERENCES users(id)
+);
+
+-- 客户端资源指标表 24h
+CREATE TABLE IF NOT EXISTS agent_metrics_24h (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  agent_id INTEGER NOT NULL,
+  timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  
+  -- CPU指标
+  cpu_usage REAL,          -- CPU使用率(%)
+  cpu_cores INTEGER,       -- CPU核心数
+  cpu_model TEXT,          -- CPU型号名称
+  
+  -- 内存指标
+  memory_total BIGINT,     -- 总内存(字节)
+  memory_used BIGINT,      -- 已用内存(字节)
+  memory_free BIGINT,      -- 空闲内存(字节)
+  memory_usage_rate REAL,  -- 内存使用率(%)
+  
+  -- 负载指标
+  load_1 REAL,             -- 1分钟平均负载
+  load_5 REAL,             -- 5分钟平均负载
+  load_15 REAL,            -- 15分钟平均负载
+  
+  -- 磁盘和网络指标(JSON格式存储)
+  disk_metrics TEXT,       -- JSON格式存储多个磁盘信息
+  network_metrics TEXT,    -- JSON格式存储多个网络接口信息
+  
+  FOREIGN KEY (agent_id) REFERENCES agents(id)
 );
 
 -- 状态页配置表

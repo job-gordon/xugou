@@ -6,6 +6,10 @@ import {
   getFormattedIPAddresses,
 } from "../services";
 import { shouldSendNotification, sendNotification } from "../services";
+import { Hono } from "hono";
+import { Bindings } from "../models/db";
+
+const agentTask = new Hono<{ Bindings: Bindings }>();
 
 interface AgentResult {
   id: number;
@@ -14,7 +18,7 @@ interface AgentResult {
   updated_at: string;
 }
 
-export const checkAgentsStatus = async (env: any) => {
+export const checkAgentsStatus = async (c: any) => {
   try {
     console.log("定时任务: 检查客户端状态...");
 
@@ -23,7 +27,7 @@ export const checkAgentsStatus = async (env: any) => {
     const now = new Date();
 
     // 查询所有状态为active的客户端
-    const activeAgents = await getActiveAgents(env.DB);
+    const activeAgents = await getActiveAgents(c.env);
 
     if (!activeAgents.results || activeAgents.results.length === 0) {
       console.log("定时任务: 没有活跃状态的客户端");
@@ -42,10 +46,10 @@ export const checkAgentsStatus = async (env: any) => {
         );
 
         // 更新客户端状态为inactive
-        await setAgentInactive(env.DB, agent.id);
+        await setAgentInactive(c.env, agent.id);
 
         // 处理通知
-        await handleAgentOfflineNotification(env, agent.id, agent.name);
+        await handleAgentOfflineNotification(c.env, agent.id, agent.name);
       }
     }
   } catch (error) {
@@ -275,3 +279,28 @@ export async function handleAgentThresholdNotification(
     console.error(`处理客户端阈值通知时出错 (ID: ${agentId}):`, error);
   }
 }
+
+// 在 Cloudflare Workers 中设置定时触发器
+export default {
+  async scheduled(event: any, env: any, ctx: any) {
+
+    const c = { env };
+
+    // 默认执行监控检查任务
+    let result: any = await checkAgentsStatus(c);
+    const now = new Date();
+    const hour = now.getUTCHours();
+    const minute = now.getUTCMinutes();
+    // 从 24h 表中删除24小时以前的 agent metrics 数据
+
+    if (hour === 0 && minute === 10){
+      await env.DB.prepare(
+        "DELETE FROM agent_metrics_24h WHERE created_at < datetime('now', '-24 hours')"
+      )
+    }
+
+    return result;
+  },
+  fetch: agentTask.fetch,
+};
+
