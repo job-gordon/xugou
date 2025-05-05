@@ -16,7 +16,7 @@ export async function createTables(env: Bindings): Promise<void> {
 
   console.log("创建监控表...");
   await env.DB.exec(
-    "CREATE TABLE IF NOT EXISTS monitors (id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT NOT NULL, url TEXT NOT NULL, method TEXT NOT NULL, interval INTEGER NOT NULL, timeout INTEGER NOT NULL, expected_status INTEGER NOT NULL, headers TEXT NOT NULL, body TEXT, created_by INTEGER NOT NULL, active BOOLEAN NOT NULL, status TEXT DEFAULT 'pending', uptime REAL DEFAULT 100.0, response_time INTEGER DEFAULT 0, last_checked TEXT, created_at TEXT NOT NULL, updated_at TEXT NOT NULL, FOREIGN KEY (created_by) REFERENCES users(id))"
+    "CREATE TABLE IF NOT EXISTS monitors (id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT NOT NULL, url TEXT NOT NULL, method TEXT NOT NULL, interval INTEGER NOT NULL, timeout INTEGER NOT NULL, expected_status INTEGER NOT NULL, headers TEXT NOT NULL, body TEXT, created_by INTEGER NOT NULL, active BOOLEAN NOT NULL, status TEXT DEFAULT 'pending', response_time INTEGER DEFAULT 0, last_checked TEXT, created_at TEXT NOT NULL, updated_at TEXT NOT NULL, FOREIGN KEY (created_by) REFERENCES users(id))"
   );
 
   console.log("创建24小时监控状态历史表(热表)...");
@@ -205,7 +205,7 @@ export async function createNotificationChannelsAndSettings(
         1,
         userId,
         "global-monitor",
-        1, // enabled
+        0, // enabled
         1, // on_down
         1, // on_recovery
         "[1]", // channels (只有Telegram)
@@ -223,7 +223,7 @@ export async function createNotificationChannelsAndSettings(
         2,
         userId,
         "global-agent",
-        1, // enabled
+        0, // enabled
         1, // on_offline
         1, // on_recovery
         1, // on_cpu_threshold
@@ -237,43 +237,6 @@ export async function createNotificationChannelsAndSettings(
         now
       )
       .run();
-  }
-}
-
-// 初始化数据库，包括创建表和填充示例数据
-export async function initializeDatabase(
-  env: Bindings
-): Promise<{ success: boolean; message: string }> {
-  try {
-    console.log("开始初始化数据库...");
-
-    // 创建表结构
-    await createTables(env);
-
-    // 创建管理员用户
-    await createAdminUser(env);
-
-    // 添加默认通知模板
-    await createNotificationTemplates(env);
-
-    // 添加默认通知渠道和设置
-    await createNotificationChannelsAndSettings(env);
-
-    // 创建默认状态页配置和关联数据
-    await createDefaultStatusPage(env);
-
-    return {
-      success: true,
-      message: "数据库初始化成功",
-    };
-  } catch (error) {
-    console.error("数据库初始化错误:", error);
-    return {
-      success: false,
-      message: `数据库初始化失败: ${
-        error instanceof Error ? error.message : String(error)
-      }`,
-    };
   }
 }
 
