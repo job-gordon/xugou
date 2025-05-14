@@ -384,7 +384,7 @@ export async function updateAgentStatusService(
 
     const metrics = statusData.map((item) => ({
       agent_id: agent.id,
-      timestamp: new Date().toISOString(),
+      timestamp: item?.timestamp,
       cpu_usage: item?.cpu?.usage,
       cpu_cores: item?.cpu?.cores,
       cpu_model: item?.cpu?.model_name,
