@@ -61,6 +61,14 @@ export async function checkMonitor(
       error = e instanceof Error ? e.message : String(e);
       console.error(`监控 ${monitor.name} (${monitor.url}) 请求失败: ${error}`);
 
+      // 更新监控状态
+      await repositories.updateMonitorStatus(
+        db,
+        monitor.id,
+        "down",
+        Date.now() - startTime
+      );
+
       return {
         success: false,
         status: "down",
@@ -122,6 +130,14 @@ export async function checkMonitor(
     };
   } catch (error) {
     console.error(`检查监控出错 (${monitor.name}):`, error);
+
+    await repositories.updateMonitorStatus(
+      db,
+      monitor.id,
+      "error",
+      0
+    );
+
     return {
       success: false,
       status: "error",
