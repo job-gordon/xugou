@@ -68,13 +68,22 @@ export async function checkMonitor(
         "down",
         Date.now() - startTime
       );
-
+      const responseTime = Date.now() - startTime;
+      // 记录状态历史
+      await repositories.insertMonitorStatusHistory(
+        db,
+        monitor.id,
+        "down",
+        responseTime,
+        null,
+        error
+      );
       return {
         success: false,
         status: "down",
         previous_status: previousStatus,
         error,
-        responseTime: Date.now() - startTime,
+        responseTime: responseTime,
         statusCode: null,
       };
     }
@@ -130,6 +139,7 @@ export async function checkMonitor(
     };
   } catch (error) {
     console.error(`检查监控出错 (${monitor.name}):`, error);
+    error = e instanceof Error ? e.message : String(e);
 
     await repositories.updateMonitorStatus(
       db,
@@ -138,11 +148,21 @@ export async function checkMonitor(
       0
     );
 
+    // 记录状态历史
+    await repositories.insertMonitorStatusHistory(
+      db,
+      monitor.id,
+      "error",
+      0,
+      null,
+      error
+    );
+
     return {
       success: false,
       status: "error",
       previous_status: monitor.status,
-      error: error instanceof Error ? error.message : String(error),
+      error: error,
       responseTime: 0,
       statusCode: null,
     };
