@@ -8,7 +8,7 @@ import UserProfile from "../pages/users/UserProfile";
 
 // 懒加载页面组件
 const Dashboard = lazy(() => import("../pages/Dashboard"));
-const Home = lazy(() => import("../pages/Home"));
+//const Home = lazy(() => import("../pages/Home"));
 const NotFound = lazy(() => import("../pages/NotFound"));
 
 // 代理页面组件
