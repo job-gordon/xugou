@@ -190,7 +190,7 @@ const publicRoutes: RouteObject[] = [
     path: "/",
     element: (
       <Suspense fallback={<div>加载中...</div>}>
-        <Home />
+        <Dashboard />
       </Suspense>
     ),
   },
