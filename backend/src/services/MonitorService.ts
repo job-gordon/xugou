@@ -139,7 +139,6 @@ export async function checkMonitor(
     };
   } catch (e) {
     console.error(`检查监控出错 (${monitor.name}):`, e);
-    error = e instanceof Error ? e.message : String(e);
 
     await repositories.updateMonitorStatus(
       db,
@@ -155,14 +154,14 @@ export async function checkMonitor(
       "error",
       0,
       0,
-      error
+      e instanceof Error ? e.message : String(e)
     );
 
     return {
       success: false,
       status: "error",
       previous_status: monitor.status,
-      error: error,
+      error: e instanceof Error ? e.message : String(e),
       responseTime: 0,
       statusCode: null,
     };
