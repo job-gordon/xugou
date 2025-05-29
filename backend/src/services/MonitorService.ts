@@ -75,7 +75,7 @@ export async function checkMonitor(
         monitor.id,
         "down",
         responseTime,
-        null,
+        0,
         error
       );
       return {
@@ -137,8 +137,8 @@ export async function checkMonitor(
             response.status
           }, 预期: ${getExpectedStatusDisplay(expectedStatus)}`,
     };
-  } catch (error) {
-    console.error(`检查监控出错 (${monitor.name}):`, error);
+  } catch (e) {
+    console.error(`检查监控出错 (${monitor.name}):`, e);
     error = e instanceof Error ? e.message : String(e);
 
     await repositories.updateMonitorStatus(
@@ -154,7 +154,7 @@ export async function checkMonitor(
       monitor.id,
       "error",
       0,
-      null,
+      0,
       error
     );
 
