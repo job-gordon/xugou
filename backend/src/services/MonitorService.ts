@@ -60,7 +60,6 @@ export async function checkMonitor(monitor: models.Monitor) {
 
       // 更新监控状态
       await repositories.updateMonitorStatus(
-        db,
         monitor.id,
         "down",
         Date.now() - startTime
@@ -68,7 +67,6 @@ export async function checkMonitor(monitor: models.Monitor) {
       const responseTime = Date.now() - startTime;
       // 记录状态历史
       await repositories.insertMonitorStatusHistory(
-        db,
         monitor.id,
         "down",
         responseTime,
@@ -134,7 +132,6 @@ export async function checkMonitor(monitor: models.Monitor) {
     console.error(`检查监控出错 (${monitor.name}):`, e);
 
     await repositories.updateMonitorStatus(
-      db,
       monitor.id,
       "error",
       0
@@ -142,7 +139,6 @@ export async function checkMonitor(monitor: models.Monitor) {
 
     // 记录状态历史
     await repositories.insertMonitorStatusHistory(
-      db,
       monitor.id,
       "error",
       0,
