@@ -260,7 +260,7 @@ const EditMonitor = () => {
           </Heading>
         </Flex>
       </Flex>
-      <Card className="mt-4">
+      <Card className="my-4 pr-4">
         <form onSubmit={handleSubmit}>
           <Box pt="2">
             <Flex direction="column" gap="2" className="ml-4">
@@ -404,7 +404,10 @@ const EditMonitor = () => {
                               variant="soft"
                               color="red"
                               size="1"
-                              onClick={() => removeHeader(index)}
+                              onClick={(e) => {
+                                e.preventDefault();
+                                removeHeader(index);
+                              }}
                             >
                               <TrashIcon />
                             </IconButton>

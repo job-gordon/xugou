@@ -68,18 +68,29 @@ Default username: admin  Default password: admin123
 
 ## ⭐ Support the Author
 
-Support us in any way you can:
+Sponsor me in any way you can:
 
 - Star the project and share it with your friends
-- Support ongoing development through WeChat donations
+- Buy me a coffee
 
 <div align="center">
-  <img src="frontend/public/wechat-reward.png" alt="WeChat Reward Code" width="300">
+  <a href="https://buymeacoffee.com/real_zaunist" target="_blank">
+    <img src="https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png" alt="Buy Me A Coffee" width="200" height="51">
+  </a>
+      <a href="https://buymeacoke.realyourdad.workers.dev/" target="_blank">
+      <img src="https://img.shields.io/badge/Buy_Me_A_Coke-FF5E5B?style=for-the-badge&logo=coca-cola&logoColor=white" alt="Buy Me A Coke" width="200" height="51" style="border-radius: 8px;" />
+    </a>
 </div>
 
 ## 🤝 Contribution
 
 All forms of contributions are welcome, whether it's new features, bug fixes, or documentation improvements.
+
+## 🏢 Sponsorship
+
+Thanks to the following sponsors for supporting the development of XUGOU:
+
+[![Powered by DartNode](https://dartnode.com/branding/DN-Open-Source-sm.png)](https://dartnode.com "Powered by DartNode - Free VPS for Open Source")
 
 ## 📄 License
 

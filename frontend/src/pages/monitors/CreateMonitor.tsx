@@ -152,7 +152,7 @@ const CreateMonitor = () => {
           <Heading size="6">{t("monitor.form.title.create")}</Heading>
         </Flex>
       </Flex>
-      <Card className="mt-4">
+      <Card className="my-4 pr-4">
         <form onSubmit={handleSubmit}>
           <Box pt="2">
             <Flex direction="column" gap="2" className="ml-4">
@@ -345,9 +345,8 @@ const CreateMonitor = () => {
             <Button variant="secondary" onClick={() => navigate("/monitors")}>
               {t("monitor.form.cancel")}
             </Button>
-            <Button type="submit" disabled={loading}>
+            <Button type="submit" disabled={loading} onClick={handleSubmit}>
               {loading ? t("monitor.form.creating") : t("monitor.form.create")}
-              {!loading && <PlusIcon />}
             </Button>
           </Flex>
         </form>

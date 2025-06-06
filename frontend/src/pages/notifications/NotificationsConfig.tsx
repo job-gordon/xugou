@@ -621,14 +621,18 @@ const NotificationsConfig = () => {
         <Box p="2">
           <Flex className="justify-between items-center mb-2">
             <Text className="text-lg">{t("notifications.channels.title")}</Text>
-            <Button className="ml-auto" variant="secondary" onClick={handleAddChannelClick}>
+            <Button
+              className="ml-auto"
+              variant="secondary"
+              onClick={handleAddChannelClick}
+            >
               <PlusIcon width="16" height="16" />
               {t("notifications.channels.add")}
             </Button>
           </Flex>
 
-          <Card>
-            <Box p="2">
+          <Box>
+            <Flex py="2" direction="column" gap="2">
               <Text className="text-gray-600 mb-3">
                 {t("notifications.channels.description")}
               </Text>
@@ -638,12 +642,12 @@ const NotificationsConfig = () => {
                   {t("notifications.channels.noChannels")}
                 </Text>
               ) : (
-                <Flex direction="column" gap="1">
+                <Flex direction="column" gap="2">
                   {channels.map((channel) => (
-                    <Card key={channel.id}>
+                    <Card key={channel.id} className="px-2">
                       <Flex className="justify-between items-center">
-                        <Flex direction="column" gap="1">
-                          <Flex gap="2" align="center">
+                        <Flex direction="column" gap="1" className="grow">
+                          <Flex gap="2" align="center" className="break-all">
                             <Text className="text-lg">{channel.name}</Text>
                             {channel.type === "telegram" &&
                               channel.config &&
@@ -662,7 +666,9 @@ const NotificationsConfig = () => {
                                   return false;
                                 }
                               })() && (
-                                <Text className="text-xs">{t("common.default")}</Text>
+                                <Text className="text-xs">
+                                  {t("common.default")}
+                                </Text>
                               )}
                           </Flex>
                           <Text className="text-xs text-gray-600">
@@ -697,7 +703,7 @@ const NotificationsConfig = () => {
                             {t("common.edit")}
                           </Button>
                           <Button
-                          className="ml-auto"
+                            className="ml-auto"
                             variant="secondary"
                             onClick={() => handleDeleteChannelClick(channel.id)}
                           >
@@ -709,8 +715,8 @@ const NotificationsConfig = () => {
                   ))}
                 </Flex>
               )}
-            </Box>
-          </Card>
+            </Flex>
+          </Box>
         </Box>
       </Flex>
     );
@@ -736,8 +742,8 @@ const NotificationsConfig = () => {
             </Button>
           </Flex>
 
-          <Card>
-            <Box p="3">
+          <Box>
+            <Box>
               <Text size="2" color="gray" mb="3">
                 {t("notifications.templates.description")}
               </Text>
@@ -749,7 +755,7 @@ const NotificationsConfig = () => {
               ) : (
                 <Flex direction="column" gap="3">
                   {templates.map((template) => (
-                    <Card key={template.id}>
+                    <Card key={template.id} className="px-4">
                       <Flex direction="column" gap="3">
                         <Flex justify="between" align="center">
                           <Flex gap="2" align="center">
@@ -795,7 +801,7 @@ const NotificationsConfig = () => {
                 </Flex>
               )}
             </Box>
-          </Card>
+          </Box>
         </Box>
       </Flex>
     );
@@ -817,11 +823,11 @@ const NotificationsConfig = () => {
             {t("notifications.settings.monitors")}
           </Text>
 
-          <Card>
+          <Card className="mt-2">
             <Box p="1">
-              <Flex direction="column" gap="1">
+              <Flex direction="column" gap="1" className="px-2">
                 <Flex justify="between" align="center">
-                  <Box >
+                  <Box>
                     <Text className="text-base">
                       {t("notifications.settings.monitors")}
                     </Text>
@@ -838,7 +844,7 @@ const NotificationsConfig = () => {
                 </Flex>
 
                 {settings.monitors.enabled && (
-                  <Box pl="1">
+                  <Box pl="4">
                     <Flex direction="column" gap="3">
                       <Flex align="center" gap="2">
                         <Switch
@@ -885,14 +891,14 @@ const NotificationsConfig = () => {
         </Box>
 
         {/* 全局客户端通知设置 */}
-        <Box p="1">
+        <Box>
           <Text className="text-lg mb-2">
             {t("notifications.settings.agents")}
           </Text>
 
-          <Card>
+          <Card className="mt-2">
             <Box p="1">
-              <Flex direction="column" gap="4">
+              <Flex direction="column" gap="4" className="px-2">
                 <Flex justify="between" align="center">
                   <Box>
                     <Text className="text-base">
@@ -1096,7 +1102,7 @@ const NotificationsConfig = () => {
           };
 
           return (
-            <Card key={monitorId}>
+            <Card key={monitorId} className="px-4">
               <Flex direction="column" gap="3">
                 <Flex justify="between" align="center">
                   <Box>
@@ -1210,7 +1216,7 @@ const NotificationsConfig = () => {
           };
 
           return (
-            <Card key={agentId}>
+            <Card key={agentId} className="px-4">
               <Flex direction="column" gap="3">
                 <Flex justify="between" align="center">
                   <Box>
@@ -1517,8 +1523,8 @@ const NotificationsConfig = () => {
                     console.log(`[通知渠道] 选择类型: ${value}`); // 调试信息
                   }}
                 >
-                  <SelectTrigger >
-                    <SelectValue/>
+                  <SelectTrigger>
+                    <SelectValue />
                   </SelectTrigger>
                   <SelectContent>
                     <SelectItem value="telegram">
@@ -1685,9 +1691,7 @@ const NotificationsConfig = () => {
           </Flex>
 
           <Flex gap="3" mt="6" justify="end">
-            <DialogClose>
-            {t("common.cancel")}
-            </DialogClose>
+            <DialogClose>{t("common.cancel")}</DialogClose>
             <Button
               className="ml-auto"
               variant="secondary"
@@ -1720,9 +1724,7 @@ const NotificationsConfig = () => {
           </DialogDescription>
 
           <Flex gap="3" mt="6" justify="end">
-            <DialogClose>
-              {t("common.cancel")}
-            </DialogClose>
+            <DialogClose>{t("common.cancel")}</DialogClose>
             <Button
               color="red"
               onClick={handleConfirmDeleteChannel}
@@ -1739,82 +1741,74 @@ const NotificationsConfig = () => {
   return (
     <Box>
       <Container>
-          <Box mb="2">
-            <Flex
-              className="flex justify-between items-center detail-header"
-            >
-              <Flex align="center" gap="2">
-                <BellIcon width="20" height="20" />
-                <Heading size="5" weight="medium">
-                  {t("notifications.title")}
-                </Heading>
-              </Flex>
-              <Button
-              className="ml-auto"
-                variant="secondary"
-                onClick={handleSave}
-                disabled={saving}
-              >
-                {saving ? t("common.savingChanges") : t("common.save")}
-              </Button>
+        <Box mb="2">
+          <Flex className="flex justify-between items-center detail-header">
+            <Flex align="center" gap="2">
+              <BellIcon width="20" height="20" />
+              <Heading size="5" weight="medium">
+                {t("notifications.title")}
+              </Heading>
             </Flex>
-            <Text color="gray" size="2">
-              {t("notifications.description")}
-            </Text>
-          </Box>
+            <Button
+              className="ml-auto"
+              variant="secondary"
+              onClick={handleSave}
+              disabled={saving}
+            >
+              {saving ? t("common.savingChanges") : t("common.save")}
+            </Button>
+          </Flex>
+          <Text color="gray" size="2">
+            {t("notifications.description")}
+          </Text>
+        </Box>
+        
+        {loading ? (
+          <Text>{t("common.loading")}...</Text>
+        ) : (
+          <Card className="mb-4">
+            <Tabs defaultValue="global">
+              <TabsList className="overflow-auto">
+                <TabsTrigger value="global">
+                  {t("notifications.tabs.global")}
+                </TabsTrigger>
+                <TabsTrigger value="channels">
+                  {t("notifications.tabs.channels")}
+                </TabsTrigger>
+                <TabsTrigger value="templates">
+                  {t("notifications.tabs.templates")}
+                </TabsTrigger>
+                <TabsTrigger value="specificMonitors">
+                  {t("notifications.tabs.specificMonitors")}
+                </TabsTrigger>
+                <TabsTrigger value="specificAgents">
+                  {t("notifications.tabs.specificAgents")}
+                </TabsTrigger>
+              </TabsList>
+              <Box pt="2" px="2">
+                <TabsContent value="global">
+                  {renderGlobalSettingsTab()}
+                </TabsContent>
 
-          {loading ? (
-            <Text>{t("common.loading")}...</Text>
-          ) : (
-              <Card>
-                <Tabs defaultValue="global">
-                  <TabsList>
-                    <TabsTrigger value="global">
-                      {t("notifications.tabs.global")}
-                    </TabsTrigger>
-                    <TabsTrigger value="channels">
-                      {t("notifications.tabs.channels")}
-                    </TabsTrigger>
-                    <TabsTrigger value="templates">
-                      {t("notifications.tabs.templates")}
-                    </TabsTrigger>
-                    <TabsTrigger value="specificMonitors">
-                      {t("notifications.tabs.specificMonitors")}
-                    </TabsTrigger>
-                    <TabsTrigger value="specificAgents">
-                      {t("notifications.tabs.specificAgents")}
-                    </TabsTrigger>
-                  </TabsList>
+                <TabsContent value="channels">
+                  {renderChannelsTab()}
+                </TabsContent>
 
-                  <Box pt="2" px="2" >
-                    <TabsContent value="global">
-                      {renderGlobalSettingsTab()}
-                    </TabsContent>
+                <TabsContent value="templates">
+                  {renderTemplatesTab()}
+                </TabsContent>
 
-                    <TabsContent value="channels" >
-                      {renderChannelsTab()}
-                    </TabsContent>
+                <TabsContent value="specificMonitors">
+                  {renderSpecificMonitorsTab()}
+                </TabsContent>
 
-                    <TabsContent value="templates">
-                      {renderTemplatesTab()}
-                    </TabsContent>
-
-                    <TabsContent
-                      value="specificMonitors"
-                    
-                    >
-                      {renderSpecificMonitorsTab()}
-                    </TabsContent>
-
-                    <TabsContent value="specificAgents">
-                      {renderSpecificAgentsTab()}
-                    </TabsContent>
-                  </Box>
-                </Tabs>
-              </Card>
-           
-          )}
-      
+                <TabsContent value="specificAgents">
+                  {renderSpecificAgentsTab()}
+                </TabsContent>
+              </Box>
+            </Tabs>
+          </Card>
+        )}
       </Container>
 
       {/* 渠道管理对话框 */}
