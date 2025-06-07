@@ -33,53 +33,6 @@ const Layout = ({ children }: LayoutProps) => {
               <Text size="2" color="gray">
                 {t("footer.copyright", { year: currentYear })}
               </Text>
-              <Flex gap="3" mt="2" direction={{ initial: "column", sm: "row" }}>
-                <Button variant="link" asChild>
-                  <a
-                    href="https://zaunist.com"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  
-                  >
-                    <FontAwesomeIcon
-                      icon={faRss}
-                      size="lg"
-                     
-                    />
-                    <Text size="2">{t("footer.blog")}</Text>
-                  </a>
-                </Button>
-                <Button variant="link" asChild>
-                  <a
-                    href="https://www.youtube.com/@zaunist"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                
-                  >
-                    <FontAwesomeIcon
-                      icon={faYoutube}
-                      size="lg"
-                  
-                    />
-                    <Text size="2">{t("footer.youtube")}</Text>
-                  </a>
-                </Button>
-                <Button variant="link" asChild>
-                  <a
-                    href="https://mail.mdzz.uk"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  
-                  >
-                    <FontAwesomeIcon
-                      icon={faEnvelope}
-                      size="lg"
-                   
-                    />
-                    <Text size="2">{t("footer.tempMail")}</Text>
-                  </a>
-                </Button>
-              </Flex>
             </Flex>
           </Container>
         </Box>
