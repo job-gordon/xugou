@@ -504,9 +504,6 @@ const zhCN = {
 
     // 页脚
     "footer.copyright": "© {year} XUGOU. 保留所有权利。",
-    "footer.blog": "博客",
-    "footer.youtube": "油管频道",
-    "footer.tempMail": "24小时临时邮箱",
 
     // AgentCard 组件
     "agentCard.receivedData": "AgentCard接收到的客户端数据",

@@ -521,9 +521,6 @@ const enUS = {
 
     // Footer
     "footer.copyright": "© {year} XUGOU. All rights reserved.",
-    "footer.blog": "Blog",
-    "footer.youtube": "YouTube Channel",
-    "footer.tempMail": "24-hour Temporary Email",
 
     // AgentCard Component
     "agentCard.receivedData": "AgentCard received client data",
