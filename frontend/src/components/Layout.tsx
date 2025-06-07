@@ -1,8 +1,7 @@
 import { ReactNode } from "react";
 import { Box, Flex, Text, Container, Theme } from "@radix-ui/themes";
-import { Separator, Button, Toaster } from "./ui";
+import { Separator, Toaster } from "./ui";
 import Navbar from "./Navbar";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useTranslation } from "react-i18next";
 
 interface LayoutProps {
