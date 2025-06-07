@@ -71,21 +71,6 @@ const enUS = {
     "language.zhCN": "Chinese",
     "language.enUS": "English",
 
-    // Home page
-    "home.title": "Welcome to XUGOU",
-    "home.subtitle": "A simple and easy-to-use monitoring platform",
-    "home.getStarted": "Get Started",
-    "home.learnMore": "Learn More",
-    "home.features.title": "Features",
-    "home.features.monitoring": "Real-time Monitoring",
-    "home.features.monitoring.desc": "Real-time monitoring of APIs and agents",
-    "home.features.alerts": "Alert Notifications",
-    "home.features.alerts.desc": "Notify you promptly when monitoring anomalies occur",
-    "home.features.dashboard": "Visual Dashboard",
-    "home.features.dashboard.desc": "Intuitive display of monitoring data and statistics",
-    "home.features.statusPage": "Status Page",
-    "home.features.statusPage.desc": "Provides a public service status page",
-
     // Login page
     "login.title": "Login",
     "login.username": "Username",

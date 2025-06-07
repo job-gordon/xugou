@@ -61,21 +61,6 @@ const zhCN = {
     "language.zhCN": "中文",
     "language.enUS": "English",
 
-    // 首页
-    "home.title": "欢迎使用 XUGOU",
-    "home.subtitle": "简单易用的监控平台",
-    "home.getStarted": "开始使用",
-    "home.learnMore": "了解更多",
-    "home.features.title": "功能特点",
-    "home.features.monitoring": "实时监控",
-    "home.features.monitoring.desc": "对 API 和客户端进行实时监控",
-    "home.features.alerts": "告警通知",
-    "home.features.alerts.desc": "当监控出现异常时，及时通知您",
-    "home.features.dashboard": "可视化仪表盘",
-    "home.features.dashboard.desc": "直观展示监控数据和统计信息",
-    "home.features.statusPage": "状态页",
-    "home.features.statusPage.desc": "提供公开的服务状态页面",
-
     // 登录页面
     "login.title": "登录",
     "login.username": "用户名",
