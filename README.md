@@ -94,6 +94,3 @@ XUGOU 采用现代化的系统架构，包含以下组件：
 
 本项目采用 MIT 协议开源，详见 [LICENSE](./LICENSE) 文件。
 
-## 🔥 Star History
-
-[![Star History Chart](https://api.star-history.com/svg?repos=zaunist/xugou&type=Date)](https://www.star-history.com/#zaunist/xugou&Date)
