@@ -755,8 +755,7 @@ const MetricsChart: React.FC<MetricsChartProps> = ({
                   // 如果有前一个数据点，计算速率
                   if (
                     prevNetworkData &&
-                    prevNetworkData.interfaces[selectedNetworkInterface] &&
-                    currentTimestamp > prevNetworkData.timestamp
+                    prevNetworkData.interfaces[selectedNetworkInterface] 
                   ) {
                     const prevBytes =
                       selectedNetworkMetric === "received"
@@ -844,7 +843,7 @@ const MetricsChart: React.FC<MetricsChartProps> = ({
     // 过滤24小时前的数据并排序
     metricsData = metricsData
       .filter((point) => point.x >= twentyFourHoursAgo)
-      .sort((a, b) => b.x - a.x);
+      .sort((a, b) => a.x - b.x);
 
     console.log(`${metricType}Data:`, metricsData);
 
