@@ -121,7 +121,7 @@ const AgentCard = ({
                 metricType={type}
                 height={180}
                 diskDevice="/"
-                networkInterface="en0"
+                networkInterface="all"
                 loadType="1"
               />
             </TabsContent>
