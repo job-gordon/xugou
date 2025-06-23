@@ -121,7 +121,7 @@ const MetricsChart: React.FC<MetricsChartProps> = ({
     diskDevice || "/"
   );
   const [selectedNetworkInterface, setSelectedNetworkInterface] =
-    useState<string>(networkInterface || "en0");
+    useState<string>(networkInterface || "all");
   const [selectedNetworkMetric, setSelectedNetworkMetric] = useState<
     "received" | "sent"
   >("received");
