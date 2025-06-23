@@ -844,7 +844,7 @@ const MetricsChart: React.FC<MetricsChartProps> = ({
     // 过滤24小时前的数据并排序
     metricsData = metricsData
       .filter((point) => point.x >= twentyFourHoursAgo)
-      .sort((a, b) => a.x - b.x);
+      .sort((a, b) => b.x - a.x);
 
     console.log(`${metricType}Data:`, metricsData);
 
