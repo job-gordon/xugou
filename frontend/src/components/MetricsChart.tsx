@@ -130,7 +130,7 @@ const MetricsChart: React.FC<MetricsChartProps> = ({
     loadType || "1"
   );
 
-  history = history.sort((a, b) => a.id - b.id);
+  history = history.sort((a, b) => b.id - a.id);
   console.log(`MetricsChart组件的history (${metricType}): `, history);
 
   // 从历史数据中提取可用的磁盘设备和网络接口
