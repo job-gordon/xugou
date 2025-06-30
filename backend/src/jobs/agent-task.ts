@@ -95,7 +95,7 @@ async function handleAgentOfflineNotification(
 
     // 获取客户端完整信息
     const agent = await getAgentById(agentId);
-    const agentData = agent[0];
+    const agentData = agent;
     if (!agentData) {
       console.error(`找不到客户端数据 (ID: ${agentId})`);
       return;
